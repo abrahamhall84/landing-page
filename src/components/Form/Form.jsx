@@ -1,30 +1,52 @@
 import React, { Component } from 'react';
 
+const initialState = {
+  firstName: '',
+  email: '',
+  nameErr: '',
+  emailErr: ''
+};
+
 export class Form extends Component {
-  state = {
-    firstName: '',
-    email: '',
-    nameErr: '',
-    emailErr: ''
-  };
+  constructor(props) {
+    super(props);
+    this.state = initialState;
+  }
+
   handleChange = e => {
     this.setState({
       [e.target.name]: e.target.value
     });
   };
-  nameValidate = () => {};
+
   validate = () => {
+    //let nameErr = '';
     let emailErr = '';
-    let nameErr = '';
-    if (!this.state.name) {
-      nameErr = 'please enter do not leave name blank';
-      alert(nameErr);
+    //let nameRegEx = /^[A-Za-z]*$/;
+    let emailRegEx = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    //let nameResult = nameRegex.test(this.state.name);
+    let emailResults = emailRegEx.test(this.state.email);
+    //if (!nameResult) {
+    //nameErr = 'please enter do not leave name blank';
+    //}
+    //make into switch case...
+    if (!emailResults) {
+      emailErr = 'please enter a valid email';
     }
+
+    if (emailErr) {
+      this.setState({ emailErr });
+      return false;
+    }
+    return true;
   };
   handleSubmit = e => {
     e.preventDefault();
     const isValid = this.validate();
-    console.log(this.state);
+    if (isValid) {
+      console.log(this.state);
+      this.setState(initialState);
+    }
   };
   render() {
     return (
